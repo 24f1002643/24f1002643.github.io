@@ -1,0 +1,44 @@
+name: Prime cache (cache-83478f8)
+
+# Run manually or on push — workflow_dispatch lets you prime on demand
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  prime-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 1) Use actions/cache@v4 to restore (or create) the cache with the exact key
+      - name: Restore/create cache (actions/cache@v4)
+        id: cache-step
+        uses: actions/cache@v4
+        with:
+          # adjust these paths to the directories/files you want cached
+          path: |
+            ~/.cache/pip
+            .venv
+            node_modules
+          key: cache-83478f8
+
+      # 2) Install dependencies only when cache is missing
+      - name: Install deps (only if cache miss)
+        if: steps.cache-step.outputs.cache-hit != 'true'
+        run: |
+          echo "Cache was a miss — installing dependencies to prime cache..."
+          # example for Python:
+          python -m venv .venv
+          . .venv/bin/activate
+          pip install -r requirements.txt
+          # example for Node (uncomment if needed):
+          # npm ci
+
+      # 3) Step required by you: named prime-cache-83478f8 that echoes hit/miss
+      - name: prime-cache-83478f8
+        run: |
+          echo "prime-cache-83478f8 -> cache-hit = ${{ steps.cache-step.outputs.cache-hit }}"
