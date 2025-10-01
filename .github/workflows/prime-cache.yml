@@ -1,4 +1,4 @@
-name: Prime cache (cache-83478f8)
+name: Prime cache tds
 
 # Run manually or on push — workflow_dispatch lets you prime on demand
 on:
@@ -31,15 +31,12 @@ jobs:
         if: steps.cache-step.outputs.cache-hit != 'true'
         run: |
           echo "Cache was a miss — installing dependencies to prime cache..."
-          # example for Python:
           python -m venv .venv
           . .venv/bin/activate
           pip install numpy
-          # example for Node (uncomment if needed):
-          # npm ci
 
       # 3) Step required by you: named prime-cache-83478f8 that echoes hit/miss
       - name: prime-cache-83478f8
         id: prime-cache-83478f8
         run: |
-          echo "prime-cache-83478f8 -> cache-hit = ${{ steps.cache-step.outputs.cache-hit }}"
+          echo "${{ steps.cache-step.outputs.cache-hit }}"
