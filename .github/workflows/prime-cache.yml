@@ -34,7 +34,7 @@ jobs:
           # example for Python:
           python -m venv .venv
           . .venv/bin/activate
-          pip install -r requirements.txt
+          pip install numpy
           # example for Node (uncomment if needed):
           # npm ci
 
