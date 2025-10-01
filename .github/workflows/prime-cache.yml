@@ -40,5 +40,6 @@ jobs:
 
       # 3) Step required by you: named prime-cache-83478f8 that echoes hit/miss
       - name: prime-cache-83478f8
+        id: prime-cache-83478f8
         run: |
           echo "prime-cache-83478f8 -> cache-hit = ${{ steps.cache-step.outputs.cache-hit }}"
